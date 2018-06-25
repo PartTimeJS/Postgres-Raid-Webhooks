@@ -41,39 +41,50 @@ webhook_boss_gold=new Discord.WebhookClient(config.WEBHOOKS.boss.gold.id, config
 webhook_eggs_legendary=new Discord.WebhookClient(config.WEBHOOKS.eggs.legendary.id, config.WEBHOOKS.eggs.legendary.token),
 webhook_boss_legendary=new Discord.WebhookClient(config.WEBHOOKS.boss.legendary.id, config.WEBHOOKS.boss.legendary.token);
 
+function botTime(time,type){
+	if(type=='1'){ return moment.unix(time).format('h:mm A'); }
+	if(type=='2'){ let now=new Date().getTime(); return moment(now).format('hhmm'); }
+	if(type=='3'){ return moment(time).format('hhmm'); }
+}
+
 pgEvents.addChannel('events', function (raid) {
 	if(raid.data.level===null){return;}
-	if(raid.data.fort_id==219 || raid.data.fort_id==37 || raid.data.fort_id==212){return;}
-	let raidEnd='', hatch='', embedColor='ff60c9', raidEgg='', richEmbed='';
-	if(raid.data.time_battle){ hatch=bot.time(parseInt((raid.data.time_battle)*1000)); }
-	if(raid.data.time_end){ raidEnd=bot.time(parseInt((raid.data.time_end)*1000)); }
-	let server=bot.guilds.get('352108656780771329'); if(server){return;}
+	if(raid.data.fort_id==219 || raid.data.fort_id==37 || raid.data.fort_id==355 || raid.data.fort_id==68 || raid.data.fort_id==212){return;}
+	let hatchTime='', embedColor='ff60c9', raidEgg='', richEmbed='', postTime='', battleTime='', raidEnd='', server='', diff='', spawned='';
+	server=bot.guilds.get('352108656780771329'); if(server){return;} postTime=botTime(null,'2');
+	hatchTime=botTime(raid.data.time_battle,'1');	raidEnd=botTime(raid.data.time_end,'1');
+	scanned=new Date().getTime(); endTime=moment.unix(raid.data.time_end).valueOf();
+	if(scanned>endTime){return;}
 	if(raid.data.pokemon_id==0){
 		pgClient.query(`SELECT * FROM forts WHERE id=${raid.data.fort_id}`, (err, fort) => {
 			isExGym=config.EXGYMS.indexOf(raid.data.fort_id);
 	  	if(err){ console.log(err); }
 			else{
+				spawned=(moment.unix(raid.data.time_battle).valueOf())-3600000; spawned=botTime(spawned,'3');
+				spawned=parseInt(postTime)-parseInt(spawned);
 				richEmbed=new Discord.RichEmbed().setThumbnail(fort.rows[0].url)
 				.addField('**'+fort.rows[0].name+'**', 'Level '+raid.data.level, true)
-				.addField('**Hatches: '+hatch+'**', 'Raid Ends: '+raidEnd, true)
-				.addField('**Directions:**',"[Google Maps](https://www.google.com/maps?q="+fort.rows[0].lat+","+fort.rows[0].lon+") | [Apple Maps](http://maps.apple.com/maps?daddr="+fort.rows[0].lat+","+fort.rows[0].lon+"&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll="+fort.rows[0].lat+","+fort.rows[0].lon+"&navigate=yes)"
-				,false)
-				.setFooter('#'+raid.data.fort_id);
+				.addField('**Hatches: '+hatchTime+'**', 'Raid Ends: '+raidEnd, true)
+				.addField('**Directions:**',"[Google Maps](https://www.google.com/maps?q="+fort.rows[0].lat+","+fort.rows[0].lon+") | [Apple Maps](http://maps.apple.com/maps?daddr="+fort.rows[0].lat+","+fort.rows[0].lon+"&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll="+fort.rows[0].lat+","+fort.rows[0].lon+"&navigate=yes)",false)
+				.setFooter('F#'+raid.data.fort_id+' | '+postTime+' | '+spawned);
 				if(raid.data.level<=2){
-					richEmbed.setColor('f358fb').setAuthor('An egg has appeared!', 'https://i.imgur.com/ABNC8aP.png');
+					richEmbed.setColor('f358fb')
 					if(webhook_eggs_pink){ webhook_eggs_pink.send(richEmbed).catch(console.error); }
+					richEmbed.setAuthor('An egg has appeared!', 'https://i.imgur.com/ABNC8aP.png');
 					if(isExGym>=0 && webhook_ex_eggs){ webhook_ex_eggs.send(richEmbed).catch(console.error); }
 					if(webhook_eggs_all){ return webhook_eggs_all.send(richEmbed).catch(console.error); }
 				}
 				if(raid.data.level>2 && raid.data.level<5){
-					richEmbed.setColor('ffd300').setAuthor('An egg has appeared!', 'https://i.imgur.com/zTvNq7j.png');
+					richEmbed.setColor('ffd300');
 					if(webhook_eggs_gold){ webhook_eggs_gold.send(richEmbed).catch(console.error); }
+					richEmbed.setAuthor('An egg has appeared!', 'https://i.imgur.com/zTvNq7j.png');
 					if(isExGym>=0 && webhook_ex_eggs){ webhook_ex_eggs.send(richEmbed).catch(console.error); }
 					if(webhook_eggs_all){	return webhook_eggs_all.send(richEmbed).catch(console.error); }
 				}
 				if(raid.data.level==5){
-					richEmbed.setColor('5b00de').setAuthor('An egg has appeared!', 'https://i.imgur.com/jaTCRXJ.png');
+					richEmbed.setColor('5b00de')
 					if(webhook_eggs_legendary){ webhook_eggs_legendary.send(richEmbed).catch(console.error); }
+					richEmbed.setAuthor('An egg has appeared!', 'https://i.imgur.com/jaTCRXJ.png');
 					if(isExGym>=0 && webhook_ex_eggs){ webhook_ex_eggs.send(richEmbed).catch(console.error); }
 					if(webhook_eggs_all){ return webhook_eggs_all.send(richEmbed).catch(console.error); }
 				}
@@ -81,30 +92,33 @@ pgEvents.addChannel('events', function (raid) {
 		});
 	}
 	else{
+		spawned=moment.unix(raid.data.time_battle).valueOf(); spawned=botTime(spawned,'3');
+		spawned=parseInt(postTime)-parseInt(spawned);
 		pgClient.query(`SELECT * FROM forts WHERE id=${raid.data.fort_id}`, (err, fort) => {
 			isExGym=config.EXGYMS.indexOf(raid.data.fort_id);
 			if(err){ console.log(err); }
 			else{
 				richEmbed=new Discord.RichEmbed().setThumbnail(fort.rows[0].url)
+				.setAuthor(pokemon[raid.data.pokemon_id]+' has taken over a Gym!', 'https://i.imgur.com/c3VExRC.png')
 				.addField('**'+fort.rows[0].name+'**', 'Level '+raid.data.level, true)
-				.addField('**Raid Ends: '+raidEnd+'**', 'Hatched: '+hatch, true)
+				.addField('**Raid Ends: '+raidEnd+'**', 'Hatched: '+hatchTime, true)
 				.addField('**Directions:**',"[Google Maps](https://www.google.com/maps?q="+fort.rows[0].lat+","+fort.rows[0].lon+") | [Apple Maps](http://maps.apple.com/maps?daddr="+fort.rows[0].lat+","+fort.rows[0].lon+"&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll="+fort.rows[0].lat+","+fort.rows[0].lon+"&navigate=yes)")
-				.setFooter('#'+raid.data.fort_id);
+				.setFooter('F#'+raid.data.fort_id+' | P#'+raid.data.pokemon_id+' | '+postTime+' | '+spawned);
 				if(raid.data.level<=2){
-					richEmbed.setColor('f358fb').setAuthor(pokemon[raid.data.pokemon_id]+' has taken over a Gym!', 'https://i.imgur.com/ABNC8aP.png');
-					if(webhook_boss_pink){webhook_boss_pink.send(richEmbed).catch(console.error);}
+					richEmbed.setColor('f358fb');
+					if(webhook_boss_pink){ webhook_boss_pink.send(richEmbed).catch(console.error); }
 					if(isExGym>=0 && webhook_ex_boss){ webhook_ex_boss.send(richEmbed).catch(console.error); }
 					if(webhook_boss_all){	return webhook_boss_all.send(richEmbed).catch(console.error); }
 				}
 				if(raid.data.level>2 && raid.data.level<5){
-					richEmbed.setColor('ffd300').setAuthor(pokemon[raid.data.pokemon_id]+' has taken over a Gym!', 'https://i.imgur.com/zTvNq7j.png');
-					if(webhook_boss_gold){webhook_boss_gold.send(richEmbed).catch(console.error);}
+					richEmbed.setColor('ffd300');
+					if(webhook_boss_gold){ webhook_boss_gold.send(richEmbed).catch(console.error); }
 					if(isExGym>=0 && webhook_ex_boss){ webhook_ex_boss.send(richEmbed).catch(console.error); }
 					if(webhook_boss_all){ return webhook_boss_all.send(richEmbed).catch(console.error); }
 				}
 				if(raid.data.level==5){
-					richEmbed.setColor('5b00de').setAuthor(pokemon[raid.data.pokemon_id]+' has taken over a Gym!', 'https://i.imgur.com/jaTCRXJ.png');
-					if(webhook_boss_legendary){webhook_boss_legendary.send(richEmbed).catch(console.error);}
+					richEmbed.setColor('5b00de');
+					if(webhook_boss_legendary){webhook_boss_legendary.send(richEmbed).catch(console.error); }
 					if(isExGym>=0 && webhook_ex_boss){ webhook_ex_boss.send(richEmbed).catch(console.error); }
 					if(webhook_boss_all){ return webhook_boss_all.send(richEmbed).catch(console.error); }
 				}
@@ -117,8 +131,6 @@ pgClient.connect((err) => {
 	if(err){ console.error('Connection Error', err.stack); }
 	else{ console.log('Connected'); }
 });
-
-bot.time=function(raidTime){ return moment(raidTime).format('h:mm A'); }
 
 bot.on('ready', () => { console.log('Now monitoring database for new raids.'); });
 
