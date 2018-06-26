@@ -49,24 +49,25 @@ function botTime(time,type){
 
 pgEvents.addChannel('events', function (raid) {
 	if(raid.data.level===null){return;}
-	if(raid.data.fort_id==219 || raid.data.fort_id==37 || raid.data.fort_id==355 || raid.data.fort_id==68 || raid.data.fort_id==212){return;}
-	let hatchTime='', embedColor='ff60c9', raidEgg='', richEmbed='', postTime='', battleTime='', raidEnd='', server='', diff='', spawned='';
+	let isIgnored=ignoredGyms.indexOf(raid.data.fort_id);	if(isIgnored>=0){return;}
+	let hatchTime='', embedColor='ff60c9', raidEgg='', richEmbed='', postTime='', battleTime='', raidEnd='', server='', hatched='', spawned='';
 	server=bot.guilds.get('352108656780771329'); if(server){return;} postTime=botTime(null,'2');
-	hatchTime=botTime(raid.data.time_battle,'1');	raidEnd=botTime(raid.data.time_end,'1');
+	spawned=moment.unix(raid.data.time_spawn).valueOf(); hatched=moment.unix(raid.data.time_battle).valueOf();
 	scanned=new Date().getTime(); endTime=moment.unix(raid.data.time_end).valueOf();
+	hatchTime=botTime(raid.data.time_battle,'1');	raidEnd=botTime(raid.data.time_end,'1');
 	if(scanned>endTime){return;}
 	if(raid.data.pokemon_id==0){
 		pgClient.query(`SELECT * FROM forts WHERE id=${raid.data.fort_id}`, (err, fort) => {
 			isExGym=config.EXGYMS.indexOf(raid.data.fort_id);
 	  	if(err){ console.log(err); }
 			else{
-				spawned=(moment.unix(raid.data.time_battle).valueOf())-3600000; spawned=botTime(spawned,'3');
-				spawned=parseInt(postTime)-parseInt(spawned);
+				spawned=((scanned-spawned)/1000)/60;
+				spawned=Math.round(spawned);
 				richEmbed=new Discord.RichEmbed().setThumbnail(fort.rows[0].url)
 				.addField('**'+fort.rows[0].name+'**', 'Level '+raid.data.level, true)
 				.addField('**Hatches: '+hatchTime+'**', 'Raid Ends: '+raidEnd, true)
 				.addField('**Directions:**',"[Google Maps](https://www.google.com/maps?q="+fort.rows[0].lat+","+fort.rows[0].lon+") | [Apple Maps](http://maps.apple.com/maps?daddr="+fort.rows[0].lat+","+fort.rows[0].lon+"&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll="+fort.rows[0].lat+","+fort.rows[0].lon+"&navigate=yes)",false)
-				.setFooter('F#'+raid.data.fort_id+' | '+postTime+' | '+spawned);
+				.setFooter('F#'+raid.data.fort_id+'|'+postTime+'|'+spawned);
 				if(raid.data.level<=2){
 					richEmbed.setColor('f358fb')
 					if(webhook_eggs_pink){ webhook_eggs_pink.send(richEmbed).catch(console.error); }
@@ -92,8 +93,8 @@ pgEvents.addChannel('events', function (raid) {
 		});
 	}
 	else{
-		spawned=moment.unix(raid.data.time_battle).valueOf(); spawned=botTime(spawned,'3');
-		spawned=parseInt(postTime)-parseInt(spawned);
+		hatched=((scanned-hatched)/1000)/60;
+		hatched=Math.round(hatched);
 		pgClient.query(`SELECT * FROM forts WHERE id=${raid.data.fort_id}`, (err, fort) => {
 			isExGym=config.EXGYMS.indexOf(raid.data.fort_id);
 			if(err){ console.log(err); }
@@ -103,7 +104,7 @@ pgEvents.addChannel('events', function (raid) {
 				.addField('**'+fort.rows[0].name+'**', 'Level '+raid.data.level, true)
 				.addField('**Raid Ends: '+raidEnd+'**', 'Hatched: '+hatchTime, true)
 				.addField('**Directions:**',"[Google Maps](https://www.google.com/maps?q="+fort.rows[0].lat+","+fort.rows[0].lon+") | [Apple Maps](http://maps.apple.com/maps?daddr="+fort.rows[0].lat+","+fort.rows[0].lon+"&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll="+fort.rows[0].lat+","+fort.rows[0].lon+"&navigate=yes)")
-				.setFooter('F#'+raid.data.fort_id+' | P#'+raid.data.pokemon_id+' | '+postTime+' | '+spawned);
+				.setFooter('F#'+raid.data.fort_id+'|P#'+raid.data.pokemon_id+'|'+postTime+'|'+hatched);
 				if(raid.data.level<=2){
 					richEmbed.setColor('f358fb');
 					if(webhook_boss_pink){ webhook_boss_pink.send(richEmbed).catch(console.error); }
