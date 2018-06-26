@@ -15,6 +15,7 @@ const tz=require('moment-timezone');
 const moment=require('moment');
 const config = require('./files/config_pgwh.json');
 const BOT_TOKEN=config.TOKEN;
+const ignoredGyms=config.IGNORE_GYMS;
 
 //⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇ POSTGRES DATABASE CONFIGS ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇//
 const pgEvents = new PGPubsub('postgres://USERNAME:PASSWORD@HOST/DB-NAME');
