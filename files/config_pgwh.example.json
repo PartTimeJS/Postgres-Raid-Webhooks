@@ -1,5 +1,6 @@
 {
   "TOKEN": "BOTTOKENHERE",
+  "DB_INFO": "postgres://USERNAME:PASSWORD@HOST/DB-NAME",
 	"WEBHOOKS": {
 		"eggs": {
 			"all": { "id": "IDHERE", "token": "TOKENHERE" },
