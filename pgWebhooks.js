@@ -16,17 +16,8 @@ const moment=require('moment');
 const config = require('./files/config_pgwh.json');
 const BOT_TOKEN=config.TOKEN;
 const ignoredGyms=config.IGNORE_GYMS;
-
-//⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇ POSTGRES DATABASE CONFIGS ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇//
-const pgEvents = new PGPubsub('postgres://USERNAME:PASSWORD@HOST/DB-NAME');
-const pgClient = new pg.Client({
-  host: 'HOST',
-  user: 'USERNAME',
-	port: 5432,
-  password: 'PASSWORD',
-  database: 'DB-NAME'
-});
-//⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆ POSTGRES DATABASE CONFIGS ⬆⬆⬆⬆⬆⬆⬆⬆⬆⬆//
+const pgEvents = new PGPubsub(config.DB_INFO);
+const pgClient = new pg.Client(config.DB_INFO);
 
 var pokemon=config.POKEMON, isExGym, webhook_eggs_all, webhook_boss_all, webhook_ex_eggs, webhook_ex_legend,
 webhook_eggs_pink, webhook_boss_pink, webhook_eggs_gold, webhook_boss_gold, webhook_eggs_legend, webhook_boss_legend;
