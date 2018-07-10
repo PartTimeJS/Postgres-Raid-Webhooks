@@ -18,13 +18,13 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 	- moment
 	- pm2
 4) Set Configs
-	- In files/config_pgwh.example.json, add your bot token, and webhook IDs/Tokens. Rename as config_pgwh.json.
-	- In pgWebhooks.js, you need to insert your database information in the marked constraints.
+	- In files/webhooks_config.example.json, add your bot token, add json directories (PMSF included by default), and 		webhook IDs/Tokens. Rename as webhooks_config.json.
+	- No changes are necessary to pgWebhooks.js.
 5) Create the Notification and Trigger in your Postgres Database
 
 RUN THESE EXACTLY AS IS:
 
-	CREATE OR REPLACE FUNCTION raids_event() RETURNS TRIGGER AS $$
+	CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
 	    DECLARE 
 		data json;
 		notification json;
@@ -42,10 +42,14 @@ RUN THESE EXACTLY AS IS:
 		RETURN NULL; 
 	    END;
 	$$ LANGUAGE plpgsql;
+	
+	CREATE TRIGGER research_notify_event
+	AFTER INSERT OR UPDATE OR DELETE ON pokestops
+	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
 	CREATE TRIGGER raids_notify_event
 	AFTER INSERT OR UPDATE OR DELETE ON raids
-	    FOR EACH ROW EXECUTE PROCEDURE raids_event();
+	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
 6) Run the bot using pm2 or node. 
 	- pm2 docs can be found at http://pm2.keymetrics.io/
