@@ -2,7 +2,7 @@
 
 A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres database and webhook changes to one or many channels. 
 
-<img src="https://i.imgur.com/4NecHCX.png" height="300" />
+<img src="https://i.imgur.com/4NecHCX.png" height="400" />
 
 <img src="https://i.imgur.com/I4N4kFD.png" height="300" />
 
