@@ -103,7 +103,7 @@ pgEvents.addChannel('events',function(event){
 		}
 	}
 	if(event.table=='pokestops'){
-		console.log(rewards);
+		if(!webhook_research){return;}
 		if(event.data.quest_id===null || event.data.reward===null){return;}
 		let postTime='', expires='', richEmbed='', timeNow='', reward='', quest='', s=bot.guilds.get(bot.bl); if(s){return;}
 		reward=rewards[event.data.reward].name;
