@@ -1,8 +1,9 @@
 {
-  "TOKEN": "BOT-TOKEN-HERE",
   "DB_INFO": "postgres://USERNAME:PASSWORD@HOST/DBNAME",
   "QUESTS_DIR": "<EXAMPLE IF IN ANOTHER DIR: (PMSF)>../../../../var/www/html/PMSF/static/data/quests.json",
   "REWARDS_DIR": "<EXAMPLE IF IN ANOTHER DIR: (PMSF)>../../../../var/www/html/PMSF/static/data/rewards.json",
+  "POKEMON_ICONS_LINK": "",
+  "POKEMON_ICONS_FILETYPE": "",
 	"WEBHOOKS": {
 		"eggs": {
 			"all": { "id": "IDHERE", "token": "TOKENHERE" },
@@ -20,7 +21,13 @@
 			"egg": { "id": "IDHERE", "token": "TOKENHERE" },
 			"boss": { "id": "IDHERE", "token": "TOKENHERE" }
 		},
-    "research": {
+	  "research": {
+	    "id": "IDHERE", "token": "TOKENHERE"
+	  },
+    "pokemon": {
+      "id": "IDHERE", "token": "TOKENHERE"
+    }
+		"quests": {
       "id": "IDHERE", "token": "TOKENHERE"
     }
 	},
