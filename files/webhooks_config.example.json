@@ -4,36 +4,36 @@
   "REWARDS_DIR": "<EXAMPLE IF IN ANOTHER DIR: (PMSF)>../../../../var/www/html/PMSF/static/data/rewards.json",
   "POKEMON_ICONS_LINK": "https://raw.githubusercontent.com/ZeChrales/monocle-icons/larger-outlined/larger-icons/",
   "POKEMON_ICONS_FILETYPE": ".png",
-	"WEBHOOKS": {
-		"eggs": {
-			"all": { "id": "IDHERE", "token": "TOKENHERE" },
-			"pink": { "id": "IDHERE", "token": "TOKENHERE" },
-			"gold": { "id": "IDHERE", "token": "TOKENHERE" },
-			"legendary": { "id": "IDHERE", "token": "TOKENHERE" }
-		},
-		"boss": {
-			"all": { "id": "IDHERE", "token": "TOKENHERE" },
-			"pink": { "id": "IDHERE", "token": "TOKENHERE" },
-			"gold": { "id": "IDHERE", "token": "TOKENHERE" },
-			"legendary": { "id": "IDHERE", "token": "TOKENHERE" }
-		},
-		"ex": {
-			"egg": { "id": "IDHERE", "token": "TOKENHERE" },
-			"boss": { "id": "IDHERE", "token": "TOKENHERE" }
-		},
-	        "research": {
-	                "id": "IDHERE", "token": "TOKENHERE"
-	        },
-                "pokemon": {
-                        "id": "IDHERE", "token": "TOKENHERE"
-                },
-		"nests": {
-                        "id": "IDHERE", "token": "TOKENHERE"
-                },
-		"quests": {
-                        "id": "IDHERE", "token": "TOKENHERE"
-                }
-	},
+  "WEBHOOKS": {
+    "eggs": {
+      "all": { "id": "IDHERE", "token": "TOKENHERE" },
+      "pink": { "id": "IDHERE", "token": "TOKENHERE" },
+      "gold": { "id": "IDHERE", "token": "TOKENHERE" },
+      "legendary": { "id": "IDHERE", "token": "TOKENHERE" }
+    },
+    "boss": {
+      "all": { "id": "IDHERE", "token": "TOKENHERE" },
+      "pink": { "id": "IDHERE", "token": "TOKENHERE" },
+      "gold": { "id": "IDHERE", "token": "TOKENHERE" },
+      "legendary": { "id": "IDHERE", "token": "TOKENHERE" }
+    },
+    "ex": {
+      "egg": { "id": "IDHERE", "token": "TOKENHERE" },
+      "boss": { "id": "IDHERE", "token": "TOKENHERE" }
+    },
+    "research": {
+      "id": "IDHERE", "token": "TOKENHERE"
+    },
+    "pokemon": {
+      "id": "IDHERE", "token": "TOKENHERE"
+    },
+    "nests": {
+     "id": "IDHERE", "token": "TOKENHERE"
+    },
+    "quests": {
+      "id": "IDHERE", "token": "TOKENHERE"
+    }
+  },
   "EXGYMS": [PUT GYM IDS HERE SEPARATED BY A COMMA. EXAMPLE: 101,21,31,42],
   "IGNORE_GYMS": [PUT GYM IDS HERE SEPARATED BY A COMMA OR LEAVE BLANK],
   "POKEMON": {
