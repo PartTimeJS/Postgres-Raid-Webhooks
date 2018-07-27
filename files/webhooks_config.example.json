@@ -27,6 +27,9 @@
                 "pokemon": {
                         "id": "IDHERE", "token": "TOKENHERE"
                 },
+		"nests": {
+                        "id": "IDHERE", "token": "TOKENHERE"
+                },
 		"quests": {
                         "id": "IDHERE", "token": "TOKENHERE"
                 }
