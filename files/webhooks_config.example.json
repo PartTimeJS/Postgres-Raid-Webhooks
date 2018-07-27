@@ -1,7 +1,7 @@
 {
   "DB_INFO": "postgres://USERNAME:PASSWORD@HOST/DBNAME",
-  "QUESTS_DIR": "<EXAMPLE IF IN ANOTHER DIR: (PMSF)>../../../../var/www/html/PMSF/static/data/quests.json",
-  "REWARDS_DIR": "<EXAMPLE IF IN ANOTHER DIR: (PMSF)>../../../../var/www/html/PMSF/static/data/rewards.json",
+  "QUESTS_JSON_DIR": "",
+  "REWARDS_JSON_DIR": "",
   "POKEMON_ICONS_LINK": "https://raw.githubusercontent.com/ZeChrales/monocle-icons/larger-outlined/larger-icons/",
   "POKEMON_ICONS_FILETYPE": ".png",
   "WEBHOOKS": {
