@@ -21,15 +21,15 @@
 			"egg": { "id": "IDHERE", "token": "TOKENHERE" },
 			"boss": { "id": "IDHERE", "token": "TOKENHERE" }
 		},
-	  "research": {
-	    "id": "IDHERE", "token": "TOKENHERE"
-	  },
-    "pokemon": {
-      "id": "IDHERE", "token": "TOKENHERE"
-    }
+	        "research": {
+	                "id": "IDHERE", "token": "TOKENHERE"
+	        },
+                "pokemon": {
+                        "id": "IDHERE", "token": "TOKENHERE"
+                },
 		"quests": {
-      "id": "IDHERE", "token": "TOKENHERE"
-    }
+                        "id": "IDHERE", "token": "TOKENHERE"
+                }
 	},
   "EXGYMS": [PUT GYM IDS HERE SEPARATED BY A COMMA. EXAMPLE: 101,21,31,42],
   "IGNORE_GYMS": [PUT GYM IDS HERE SEPARATED BY A COMMA OR LEAVE BLANK],
