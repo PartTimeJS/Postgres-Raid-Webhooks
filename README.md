@@ -2,11 +2,21 @@
 
 A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres database and webhook changes to one or many discord channels. 
 
-<img src="https://i.imgur.com/4NecHCX.png" height="400" />
+Raid Boss Feed example:
+<img src="https://i.imgur.com/zRWpTRg.png" height="400" />
 
-<img src="https://i.imgur.com/I4N4kFD.png" height="300" />
+Nest Feed example:
+<img src="https://i.imgur.com/RhhEiAS.png" height="300" />
 
-<img src="https://i.imgur.com/u7rX1Wm.png"/>
+Quest Feed example:
+<img src="https://i.imgur.com/L8cbUjK.png" height="300" />
+
+Pokemon Feed example:
+<img src="https://i.imgur.com/Em1c5XT.png" height="300" />
+
+Possible feeds:
+<img src="https://i.imgur.com/RhhEiAS.png" height="300" />
+
 
 # REQUIREMENTS:
 1) Install Node.js (https://nodejs.org/en/download/ `ver 8.4+`)
@@ -22,50 +32,42 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 	- No changes are necessary to pgWebhooks.js.
 5) Create the Notification and Trigger in your Postgres Database
 
-      RUN THIS EXACTLY AS IS:
+RUN THESE EXACTLY AS IS:
 
-		CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
-		    DECLARE 
-			data json;
-			notification json;
-		    BEGIN
-			IF (TG_OP = 'DELETE') THEN
-			    data = row_to_json(OLD);
-			ELSE
-			    data = row_to_json(NEW);
-			END IF;
-			notification = json_build_object(
-					  'table',TG_TABLE_NAME,
-					  'action', TG_OP,
-					  'data', data);
-			PERFORM pg_notify('events',notification::text);
-			RETURN NULL; 
-		    END;
-		$$ LANGUAGE plpgsql;
+	CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
+	    DECLARE 
+		data json;
+		notification json;
+	    BEGIN
+		IF (TG_OP = 'DELETE') THEN
+		    data = row_to_json(OLD);
+		ELSE
+		    data = row_to_json(NEW);
+		END IF;
+		notification = json_build_object(
+				  'table',TG_TABLE_NAME,
+				  'action', TG_OP,
+				  'data', data);
+		PERFORM pg_notify('events',notification::text);
+		RETURN NULL; 
+	    END;
+	$$ LANGUAGE plpgsql;
 	
-	For Research/Quest Feed Run:
-	
-		CREATE TRIGGER research_notify_event
-		AFTER INSERT OR UPDATE OR DELETE ON pokestops
-		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
-	   
-	For Raid Feed(s) Run:
+	CREATE TRIGGER research_notify_event
+	AFTER INSERT OR UPDATE OR DELETE ON pokestops
+	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
-		CREATE TRIGGER raids_notify_event
-		AFTER INSERT OR UPDATE OR DELETE ON raids
-		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
-	   
-	For Pokemon Feed Run:
+	CREATE TRIGGER raids_notify_event
+	AFTER INSERT OR UPDATE OR DELETE ON raids
+	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
-		CREATE TRIGGER pokemon_notify_event
-		AFTER INSERT OR UPDATE OR DELETE ON sightings
-		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
-	   
-	For Nest Feed Run:
+	CREATE TRIGGER raids_notify_event
+	AFTER INSERT OR UPDATE OR DELETE ON sightings
+	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 	
-		CREATE TRIGGER nest_notify_event
-		AFTER INSERT OR UPDATE OR DELETE ON nests
-		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+	CREATE TRIGGER raids_notify_event
+	AFTER INSERT OR UPDATE OR DELETE ON nests
+	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
 
 6) Run the bot using pm2 or node. 
