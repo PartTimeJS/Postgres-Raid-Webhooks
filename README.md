@@ -43,17 +43,25 @@ RUN THESE EXACTLY AS IS:
 	    END;
 	$$ LANGUAGE plpgsql;
 	
+For Research/Quest Feed:
+	
 	CREATE TRIGGER research_notify_event
 	AFTER INSERT OR UPDATE OR DELETE ON pokestops
 	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+	   
+For Raid Feed(s):
 
 	CREATE TRIGGER raids_notify_event
 	AFTER INSERT OR UPDATE OR DELETE ON raids
 	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+	   
+For Pokemon Feed:
 
 	CREATE TRIGGER raids_notify_event
 	AFTER INSERT OR UPDATE OR DELETE ON sightings
 	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+	   
+For Nest Feed:
 	
 	CREATE TRIGGER raids_notify_event
 	AFTER INSERT OR UPDATE OR DELETE ON nests
