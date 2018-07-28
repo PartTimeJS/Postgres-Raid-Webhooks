@@ -20,7 +20,7 @@ Pokemon Feed example:
 
 Possible feeds:
 
-<img src="https://i.imgur.com/RhhEiAS.png" height="300" />
+<img src="https://i.imgur.com/I4N4kFD.png" height="300" />
 
 
 # REQUIREMENTS:
