@@ -57,13 +57,13 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 	   
 	For Pokemon Feed Run:
 
-		CREATE TRIGGER raids_notify_event
+		CREATE TRIGGER pokemon_notify_event
 		AFTER INSERT OR UPDATE OR DELETE ON sightings
 		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 	   
 	For Nest Feed Run:
 	
-		CREATE TRIGGER raids_notify_event
+		CREATE TRIGGER nest_notify_event
 		AFTER INSERT OR UPDATE OR DELETE ON nests
 		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
