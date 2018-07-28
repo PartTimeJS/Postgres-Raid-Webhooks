@@ -1,10 +1,12 @@
-const config=require('./files/webhook_config.json'); const PGPubsub = require('pg-pubsub');
+const config=require('./files/webhook_config.json'); const PGPubsub = require('pg-pubsub'); var rewards, quests;
 const Discord=require('discord.js'); const moment=require('moment'); const pg = require('pg');
 const bot=new Discord.Client({ disabledEvents: ['PRESENCE_UPDATE','VOICE_STATE_UPDATE','TYPING_START','VOIVE_SERVER_UPDATE','RELATIONSHIP_ADD','RELATIONSHIP_REMOVE'] });
 const pgClient=new pg.Client(config.DB_INFO); const pgEvents=new PGPubsub(config.DB_INFO);
 const ignoredGyms=config.IGNORE_GYMS; const pokemonName=config.POKEMON;
 const research=config.RESEARCH_ROLES; const pokemonIcon=config.POKEMON_ICONS_LINK;
 const iconFileType=config.POKEMON_ICONS_FILETYPE; const fs=require('fs');
+fs.stat(config.REWARDS_JSON_DIR, function(err, stats){if(stats){rewards=require(config.REWARDS_JSON_DIR);}});
+fs.stat(config.QUESTS_JSON_DIR, function(err, stats){if(stats){quests=require(config.QUESTS_JSON_DIR);}});
 const webhook_nests=new Discord.WebhookClient(config.WEBHOOKS.nests.id, config.WEBHOOKS.nests.token);
 const webhook_pokemon=new Discord.WebhookClient(config.WEBHOOKS.pokemon.id, config.WEBHOOKS.pokemon.token);
 const webhook_research=new Discord.WebhookClient(config.WEBHOOKS.research.id, config.WEBHOOKS.research.token);
@@ -102,18 +104,17 @@ pgEvents.addChannel('events',function(event){
 				});
 			} return;
 		case 'pokestops':
-			if(config.REWARDS_JSON_DIR){let rewards=require(config.REWARDS_JSON_DIR;}
-			if(config.QUESTS_JSON_DIR){let quests=require(config.QUESTS_JSON_DIR);}
+			console.log('here');
+			if(event.data.quest_id===null || event.data.reward===null){return;} timeNow=new Date().getTime();
 			if(!webhook_research){console.error('##### NO WEBHOOK FOR RESEARCH HAS BEEN SET IN files/webhooks_config.json #####');return;}
 			if(!rewards || !quests){console.error('##### NO DIRECTORY FOR QUESTS OR REWARDS HAS BEEN SET IN files/webhooks_config.json #####');return;}
-			if(event.data.quest_id===null || event.data.reward===null){return;} timeNow=new Date().getTime();
 			reward=rewards[event.data.reward].name;	rn=rewards[event.data.reward].name.toLowerCase();
 			richEmbed=new Discord.RichEmbed().setColor('66ffcd')
 			.addField('Directions:','[Google Maps](https://www.google.com/maps?q='+event.data.lat+','+event.data.lon+') | [Apple Maps](http://maps.apple.com/maps?daddr='+event.data.lat+','+event.data.lon+'&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll='+event.data.lat+','+event.data.lon+'&navigate=yes)',false)
 			.setImage('https://maps.googleapis.com/maps/api/staticmap?center='+event.data.lat+','+event.data.lon+'&markers='+event.data.lat+','+event.data.lon+'&size=450x220&zoom=16')
 			.setFooter('Expires '+moment(timeNow).format('M/D')+' @ Midnight');
-			if(event.data.submitted_by){richEmbed.setDescription(quests[event.data.quest_id].name+'\nSubmitted by '+event.data.submitted_by);}
-			else{richEmbed.setDescription(quests[event.data.quest_id].name);}
+			if(event.data.submitted_by){richEmbed.setDescription('**'+quests[event.data.quest_id].name+'**\nSubmitted by '+event.data.submitted_by);}
+			else{richEmbed.setDescription('**'+quests[event.data.quest_id].name+'**');}
 			switch(true){
 				case rn.indexOf('stardust')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/WimkNLf.png').setThumbnail('https://i.imgur.com/WimkNLf.png'); break;
 				case rn.indexOf('rare')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/TnALZ7D.png').setThumbnail('https://i.imgur.com/TnALZ7D.png'); break;
@@ -136,6 +137,7 @@ pgEvents.addChannel('events',function(event){
 				case rn.indexOf('larvitar')>=0: richEmbed.setAuthor(reward+' Encounter @ '+event.data.name,'https://i.imgur.com/EvWSM0F.png').setThumbnail('https://i.imgur.com/EvWSM0F.png'); break;
 				default: richEmbed.setAuthor(reward+' Encounter @ '+event.data.name).setThumbnail(event.data.url);
 			}
+			console.log('here2');
 			return webhook_research.send(richEmbed).catch(console.error);
 		case 'sightings':
 			if(!webhook_pokemon){console.error('##### NO WEBHOOK FOR POKEMON HAS BEEN SET IN files/webhooks_config.json #####');return;}
