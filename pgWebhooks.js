@@ -106,8 +106,7 @@ pgEvents.addChannel('events',function(event){
 		case 'pokestops':
 			if(!webhook_research){console.error('##### NO WEBHOOK FOR RESEARCH HAS BEEN SET IN files/webhooks_config.json #####');return;}
 			if(!rewards || !quests){console.error('### NO DIRECTORY FOR QUESTS OR REWARDS HAS BEEN SET IN files/webhooks_config.json #####');return;}
-			if(event.data.quest_id===null || event.data.reward===null){return;}
-			if()timeNow=new Date().getTime();
+			if(event.data.quest_id===null || event.data.reward===null){return;} timeNow=new Date().getTime();
 			reward=rewards[event.data.reward].name;	rn=rewards[event.data.reward].name.toLowerCase();
 			richEmbed=new Discord.RichEmbed().setColor('66ffcd')
 			.addField('Directions:','[Google Maps](https://www.google.com/maps?q='+event.data.lat+','+event.data.lon+') | [Apple Maps](http://maps.apple.com/maps?daddr='+event.data.lat+','+event.data.lon+'&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll='+event.data.lat+','+event.data.lon+'&navigate=yes)',false)
@@ -131,10 +130,10 @@ pgEvents.addChannel('events',function(event){
 				case rn.indexOf('tm')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/S38qdja.png').setThumbnail('https://i.imgur.com/S38qdja.png'); break;
 				case rn.indexOf('xp')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/lYmKyMG.jpg').setThumbnail('https://i.imgur.com/lYmKyMG.jpg'); break;
 				case rn.indexOf('poké')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/arNZ21Y.png').setThumbnail('https://i.imgur.com/arNZ21Y.png'); break;
-				case rn.indexOf('absol')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/RD8MDuS.png').setThumbnail('https://i.imgur.com/RD8MDuS.png'); break;
-				case rn.indexOf('dratini')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/V4o18Wt.png').setThumbnail('https://i.imgur.com/V4o18Wt.png'); break;
-				case rn.indexOf('chansey')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/xM4ZiAZ.png').setThumbnail('https://i.imgur.com/xM4ZiAZ.png'); break;
-				case rn.indexOf('larvitar')>=0: richEmbed.setAuthor(reward+' @ '+event.data.name,'https://i.imgur.com/EvWSM0F.png').setThumbnail('https://i.imgur.com/EvWSM0F.png'); break;
+				case rn.indexOf('absol')>=0: richEmbed.setAuthor(reward+' Encounter @ '+event.data.name,'https://i.imgur.com/RD8MDuS.png').setThumbnail('https://i.imgur.com/RD8MDuS.png'); break;
+				case rn.indexOf('dratini')>=0: richEmbed.setAuthor(reward+' Encounter @ '+event.data.name,'https://i.imgur.com/V4o18Wt.png').setThumbnail('https://i.imgur.com/V4o18Wt.png'); break;
+				case rn.indexOf('chansey')>=0: richEmbed.setAuthor(reward+' Encounter @ '+event.data.name,'https://i.imgur.com/xM4ZiAZ.png').setThumbnail('https://i.imgur.com/xM4ZiAZ.png'); break;
+				case rn.indexOf('larvitar')>=0: richEmbed.setAuthor(reward+' Encounter @ '+event.data.name,'https://i.imgur.com/EvWSM0F.png').setThumbnail('https://i.imgur.com/EvWSM0F.png'); break;
 				default: richEmbed.setAuthor(reward+' Encounter @ '+event.data.name).setThumbnail(event.data.url);
 			}
 			return webhook_research.send(richEmbed).catch(console.error);
