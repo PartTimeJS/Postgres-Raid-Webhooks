@@ -3,18 +3,23 @@
 A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres database and webhook changes to one or many discord channels. 
 
 Raid Boss Feed example:
+
 <img src="https://i.imgur.com/zRWpTRg.png" height="400" />
 
 Nest Feed example:
+
 <img src="https://i.imgur.com/RhhEiAS.png" height="300" />
 
 Quest Feed example:
+
 <img src="https://i.imgur.com/L8cbUjK.png" height="300" />
 
 Pokemon Feed example:
+
 <img src="https://i.imgur.com/Em1c5XT.png" height="300" />
 
 Possible feeds:
+
 <img src="https://i.imgur.com/RhhEiAS.png" height="300" />
 
 
