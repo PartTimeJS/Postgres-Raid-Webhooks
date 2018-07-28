@@ -22,7 +22,7 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 	- No changes are necessary to pgWebhooks.js.
 5) Create the Notification and Trigger in your Postgres Database
 
-6) RUN TIS EXACTLY AS IS:
+6) RUN THIS EXACTLY AS IS:
 
 		CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
 		    DECLARE 
