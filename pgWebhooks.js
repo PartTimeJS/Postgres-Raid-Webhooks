@@ -2,8 +2,8 @@ const config=require('./files/webhook_config.json'); const PGPubsub = require('p
 const Discord=require('discord.js'); const moment=require('moment'); const pg = require('pg');
 const bot=new Discord.Client({ disabledEvents: ['PRESENCE_UPDATE','VOICE_STATE_UPDATE','TYPING_START','VOIVE_SERVER_UPDATE','RELATIONSHIP_ADD','RELATIONSHIP_REMOVE'] });
 const pgClient=new pg.Client(config.DB_INFO); const pgEvents=new PGPubsub(config.DB_INFO);
-if(config.REWARDS_JSON_DIR){const rewards=require(config.REWARDS_JSON_DIR);}
-if(config.QUESTS_JSON_DIR){const quests=require(config.QUESTS_JSON_DIR);}
+if(config.REWARDS_DIR){const rewards=require(config.REWARDS_DIR);}
+if(config.QUESTS_DIR){const quests=require(config.QUESTS_DIR);}
 const ignoredGyms=config.IGNORE_GYMS; const pokemonName=config.POKEMON;
 const research=config.RESEARCH_ROLES; const pokemonIcon=config.POKEMON_ICONS_LINK;
 const iconFileType=config.POKEMON_ICONS_FILETYPE; const fs=require('fs');
@@ -104,8 +104,10 @@ pgEvents.addChannel('events',function(event){
 				});
 			} return;
 		case 'pokestops':
-			if(!webhook_research){return;} if(event.data.quest_id===null || event.data.reward===null){return;}
-			timeNow=new Date().getTime();
+			if(!webhook_research){console.error('##### NO WEBHOOK FOR RESEARCH HAS BEEN SET IN files/webhooks_config.json #####');return;}
+			if(!rewards || !quests){console.error('### NO DIRECTORY FOR QUESTS OR REWARDS HAS BEEN SET IN files/webhooks_config.json #####');return;}
+			if(event.data.quest_id===null || event.data.reward===null){return;}
+			if()timeNow=new Date().getTime();
 			reward=rewards[event.data.reward].name;	rn=rewards[event.data.reward].name.toLowerCase();
 			richEmbed=new Discord.RichEmbed().setColor('66ffcd')
 			.addField('Directions:','[Google Maps](https://www.google.com/maps?q='+event.data.lat+','+event.data.lon+') | [Apple Maps](http://maps.apple.com/maps?daddr='+event.data.lat+','+event.data.lon+'&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll='+event.data.lat+','+event.data.lon+'&navigate=yes)',false)
@@ -137,7 +139,8 @@ pgEvents.addChannel('events',function(event){
 			}
 			return webhook_research.send(richEmbed).catch(console.error);
 		case 'sightings':
-			if(!webhook_pokemon){return;} if(event.data.pokemon_id===null){return;}
+			if(!webhook_pokemon){console.error('##### NO WEBHOOK FOR POKEMON HAS BEEN SET IN files/webhooks_config.json #####');return;}
+			if(event.data.pokemon_id===null){return;}
 			timeNow=new Date().getTime(); postTime=moment(timeNow).format('**h:mm A** MM/DD/YY');
 			richEmbed=new Discord.RichEmbed().setThumbnail(pokemonIcon+event.data.pokemon_id+iconFileType)
 			.setTitle('A wild **'+pokemonName[event.data.pokemon_id]+'** has appeared!')
@@ -149,7 +152,8 @@ pgEvents.addChannel('events',function(event){
 			else{richEmbed.setDescription('Spotted @ '+postTime);}
 			return webhook_pokemon.send(richEmbed).catch(console.error);
 		case 'nests':
-			if(!webhook_nests){return;} if(event.data.pokemon_id<1){return;}
+			if(!webhook_nests){console.error('##### NO WEBHOOK FOR NESTS HAS BEEN SET IN files/webhooks_config.json #####');return;}
+			if(event.data.pokemon_id<1){return;}
 			migrationDate=config.MIGRATION_DATE*1000; timeNow=new Date().getTime();
 			if(migrationDate<timeNow){ //CHECK AND RESET MIGRATION DATE IF NECESSARY
 				config.MIGRATION_DATE=config.MIGRATION_DATE+1209600; migrationDate=config.MIGRATION_DATE;
