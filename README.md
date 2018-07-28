@@ -22,7 +22,7 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 	- No changes are necessary to pgWebhooks.js.
 5) Create the Notification and Trigger in your Postgres Database
 
-6) RUN THIS EXACTLY AS IS:
+      RUN THIS EXACTLY AS IS:
 
 		CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
 		    DECLARE 
@@ -68,6 +68,6 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
 
-7) Run the bot using pm2 or node. 
+6) Run the bot using pm2 or node. 
 	- pm2 docs can be found at http://pm2.keymetrics.io/
 
