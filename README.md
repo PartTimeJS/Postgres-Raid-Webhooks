@@ -24,24 +24,24 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 
 6) RUN TIS EXACTLY AS IS:
 
-	CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
-	    DECLARE 
-		data json;
-		notification json;
-	    BEGIN
-		IF (TG_OP = 'DELETE') THEN
-		    data = row_to_json(OLD);
-		ELSE
-		    data = row_to_json(NEW);
-		END IF;
-		notification = json_build_object(
-				  'table',TG_TABLE_NAME,
-				  'action', TG_OP,
-				  'data', data);
-		PERFORM pg_notify('events',notification::text);
-		RETURN NULL; 
-	    END;
-	$$ LANGUAGE plpgsql;
+		CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
+		    DECLARE 
+			data json;
+			notification json;
+		    BEGIN
+			IF (TG_OP = 'DELETE') THEN
+			    data = row_to_json(OLD);
+			ELSE
+			    data = row_to_json(NEW);
+			END IF;
+			notification = json_build_object(
+					  'table',TG_TABLE_NAME,
+					  'action', TG_OP,
+					  'data', data);
+			PERFORM pg_notify('events',notification::text);
+			RETURN NULL; 
+		    END;
+		$$ LANGUAGE plpgsql;
 	
 	For Research/Quest Feed Run:
 	
