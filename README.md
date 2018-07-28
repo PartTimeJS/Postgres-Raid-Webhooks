@@ -1,4 +1,4 @@
-# Postgres Raid Webhooks
+# Postgres DB Webhooks
 
 A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres database and webhook changes to one or many discord channels. 
 
