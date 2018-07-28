@@ -2,8 +2,6 @@ const config=require('./files/webhook_config.json'); const PGPubsub = require('p
 const Discord=require('discord.js'); const moment=require('moment'); const pg = require('pg');
 const bot=new Discord.Client({ disabledEvents: ['PRESENCE_UPDATE','VOICE_STATE_UPDATE','TYPING_START','VOIVE_SERVER_UPDATE','RELATIONSHIP_ADD','RELATIONSHIP_REMOVE'] });
 const pgClient=new pg.Client(config.DB_INFO); const pgEvents=new PGPubsub(config.DB_INFO);
-if(config.REWARDS_DIR){const rewards=require(config.REWARDS_DIR);}
-if(config.QUESTS_DIR){const quests=require(config.QUESTS_DIR);}
 const ignoredGyms=config.IGNORE_GYMS; const pokemonName=config.POKEMON;
 const research=config.RESEARCH_ROLES; const pokemonIcon=config.POKEMON_ICONS_LINK;
 const iconFileType=config.POKEMON_ICONS_FILETYPE; const fs=require('fs');
@@ -104,8 +102,10 @@ pgEvents.addChannel('events',function(event){
 				});
 			} return;
 		case 'pokestops':
+			if(config.REWARDS_JSON_DIR){let rewards=require(config.REWARDS_JSON_DIR;}
+			if(config.QUESTS_JSON_DIR){let quests=require(config.QUESTS_JSON_DIR);}
 			if(!webhook_research){console.error('##### NO WEBHOOK FOR RESEARCH HAS BEEN SET IN files/webhooks_config.json #####');return;}
-			if(!rewards || !quests){console.error('### NO DIRECTORY FOR QUESTS OR REWARDS HAS BEEN SET IN files/webhooks_config.json #####');return;}
+			if(!rewards || !quests){console.error('##### NO DIRECTORY FOR QUESTS OR REWARDS HAS BEEN SET IN files/webhooks_config.json #####');return;}
 			if(event.data.quest_id===null || event.data.reward===null){return;} timeNow=new Date().getTime();
 			reward=rewards[event.data.reward].name;	rn=rewards[event.data.reward].name.toLowerCase();
 			richEmbed=new Discord.RichEmbed().setColor('66ffcd')
