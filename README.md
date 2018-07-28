@@ -22,7 +22,7 @@ A Bot to monitor a raids and/or pokestops table in a using a monocle Postgres da
 	- No changes are necessary to pgWebhooks.js.
 5) Create the Notification and Trigger in your Postgres Database
 
-RUN THESE EXACTLY AS IS:
+6) RUN TIS EXACTLY AS IS:
 
 	CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
 	    DECLARE 
@@ -43,31 +43,31 @@ RUN THESE EXACTLY AS IS:
 	    END;
 	$$ LANGUAGE plpgsql;
 	
-For Research/Quest Feed:
+	For Research/Quest Feed Run:
 	
-	CREATE TRIGGER research_notify_event
-	AFTER INSERT OR UPDATE OR DELETE ON pokestops
-	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+		CREATE TRIGGER research_notify_event
+		AFTER INSERT OR UPDATE OR DELETE ON pokestops
+		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 	   
-For Raid Feed(s):
+	For Raid Feed(s) Run:
 
-	CREATE TRIGGER raids_notify_event
-	AFTER INSERT OR UPDATE OR DELETE ON raids
-	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+		CREATE TRIGGER raids_notify_event
+		AFTER INSERT OR UPDATE OR DELETE ON raids
+		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 	   
-For Pokemon Feed:
+	For Pokemon Feed Run:
 
-	CREATE TRIGGER raids_notify_event
-	AFTER INSERT OR UPDATE OR DELETE ON sightings
-	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+		CREATE TRIGGER raids_notify_event
+		AFTER INSERT OR UPDATE OR DELETE ON sightings
+		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 	   
-For Nest Feed:
+	For Nest Feed Run:
 	
-	CREATE TRIGGER raids_notify_event
-	AFTER INSERT OR UPDATE OR DELETE ON nests
-	   FOR EACH ROW EXECUTE PROCEDURE notify_event();
+		CREATE TRIGGER raids_notify_event
+		AFTER INSERT OR UPDATE OR DELETE ON nests
+		   FOR EACH ROW EXECUTE PROCEDURE notify_event();
 
 
-6) Run the bot using pm2 or node. 
+7) Run the bot using pm2 or node. 
 	- pm2 docs can be found at http://pm2.keymetrics.io/
 
