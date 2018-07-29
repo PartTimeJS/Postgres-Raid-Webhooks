@@ -47,8 +47,7 @@ pgEvents.addChannel('events',function(event){
 					.addField('**'+fort.rows[0].name+'**', 'Level '+event.data.level, true)
 					.addField('**Hatches: '+hatchTime+'**', 'Raid Ends: '+raidEnd, true)
 					.addField('**Directions:**','[Google Maps](https://www.google.com/maps?q='+fort.rows[0].lat+','+fort.rows[0].lon+') | [Apple Maps](http://maps.apple.com/maps?daddr='+fort.rows[0].lat+','+fort.rows[0].lon+'&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll='+fort.rows[0].lat+','+fort.rows[0].lon+'&navigate=yes)',false)
-					.setImage('https://maps.googleapis.com/maps/api/staticmap?center='+fort.rows[0].lat+','+fort.rows[0].lon+'&markers='+fort.rows[0].lat+','+fort.rows[0].lon+'&size=450x220&zoom=16')
-					.setFooter('F'+event.data.fort_id+'|'+postTime+'|'+spawned);
+					.setImage('https://maps.googleapis.com/maps/api/staticmap?center='+fort.rows[0].lat+','+fort.rows[0].lon+'&markers='+fort.rows[0].lat+','+fort.rows[0].lon+'&size=450x220&zoom=16');
 					if(event.data.level<=2){
 						richEmbed.setColor('f358fb')
 						if(webhook_eggs_pink){ webhook_eggs_pink.send(richEmbed).catch(console.error); }
@@ -81,8 +80,7 @@ pgEvents.addChannel('events',function(event){
 					.addField('**'+fort.rows[0].name+'**', 'Level '+event.data.level, true)
 					.addField('**Raid Ends: '+raidEnd+'**', 'Hatched: '+hatchTime, true)
 					.addField('**Directions:**','[Google Maps](https://www.google.com/maps?q='+fort.rows[0].lat+','+fort.rows[0].lon+') | [Apple Maps](http://maps.apple.com/maps?daddr='+fort.rows[0].lat+','+fort.rows[0].lon+'&z=10&t=s&dirflg=w) | [Waze](https://waze.com/ul?ll='+fort.rows[0].lat+','+fort.rows[0].lon+'&navigate=yes)')
-					.setImage('https://maps.googleapis.com/maps/api/staticmap?center='+fort.rows[0].lat+','+fort.rows[0].lon+'&markers='+fort.rows[0].lat+','+fort.rows[0].lon+'&size=450x220&zoom=16')
-					.setFooter('F'+event.data.fort_id+'|P'+event.data.pokemon_id+'|'+postTime+'|'+hatched);
+					.setImage('https://maps.googleapis.com/maps/api/staticmap?center='+fort.rows[0].lat+','+fort.rows[0].lon+'&markers='+fort.rows[0].lat+','+fort.rows[0].lon+'&size=450x220&zoom=16');
 					if(event.data.level<=2){
 						richEmbed.setColor('f358fb');
 						if(webhook_boss_pink){ webhook_boss_pink.send(richEmbed).catch(console.error); }
