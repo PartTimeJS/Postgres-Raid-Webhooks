@@ -1,3 +1,5 @@
+# THIS REPO IS NO LONGER MAINTAINED
+
 # Postgres DB Webhooks
 
 A script to monitor a raids, quests, nests, and pokemon table in a using a monocle Postgres database and webhook changes to one or many discord channels. 
